@@ -1,5 +1,6 @@
 package com.chak.sc.kotlingraphql.graphql.model
 
+import com.chak.sc.kotlingraphql.utils.SuspendedFunction
 import com.expediagroup.graphql.annotations.GraphQLIgnore
 import com.expediagroup.graphql.annotations.GraphQLName
 import java.time.LocalDate
@@ -15,7 +16,7 @@ data class CustomerGraph(
 ) {
 
     @GraphQLIgnore
-    internal var addressPopulator: (suspend (CustomerGraph) -> List<AddressGraphType>)? = null
+    internal var addressPopulator: SuspendedFunction<CustomerGraph, List<AddressGraphType>>? = null
 
     suspend fun addresses() = addressPopulator?.let {
         it(this)
