@@ -1,5 +1,6 @@
 server:
-  port: 8081
+  port: 8888
+
 spring:
   application:
     name: config-server
@@ -7,4 +8,11 @@ spring:
     enabled: true
     server:
       git.uri: file://C:/Workspace/kotlin-projects/configs
+
+eureka:
+  client:
+    serviceUrl.defaultZone: http://localhost:8080/eureka
+    registry-fetch-interval-seconds: 5
+    region: default
+
 
