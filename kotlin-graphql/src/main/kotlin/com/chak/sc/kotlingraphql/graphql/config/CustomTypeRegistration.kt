@@ -1,5 +1,6 @@
 package com.chak.sc.kotlingraphql.graphql.config
 
+import com.chak.sc.kotlingraphql.utils.PositiveInt
 import com.expediagroup.graphql.directives.KotlinDirectiveWiringFactory
 import com.expediagroup.graphql.hooks.SchemaGeneratorHooks
 import graphql.scalars.ExtendedScalars
@@ -17,6 +18,7 @@ class CustomTypeRegistration(override val wiringFactory: KotlinDirectiveWiringFa
         when (type.classifier) {
             LocalDate::class -> ExtendedScalars.Date
             LocalDateTime::class -> ExtendedScalars.DateTime
+            PositiveInt::class -> ExtendedScalars.PositiveInt
             else -> null
         }
 

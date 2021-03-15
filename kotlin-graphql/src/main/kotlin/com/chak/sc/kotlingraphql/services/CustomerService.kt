@@ -46,4 +46,6 @@ class CustomerService(
             )
         }
         .toList()
+
+    fun findAllCustomerIds(ids: List<Long>) = addressRepository.findAllByCustomerId(ids)
 }

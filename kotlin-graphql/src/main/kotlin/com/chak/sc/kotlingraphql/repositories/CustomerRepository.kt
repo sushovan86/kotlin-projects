@@ -10,4 +10,6 @@ interface CustomerRepository : CoroutineCrudRepository<Customer, Long>
 interface AddressRepository : CoroutineCrudRepository<Address, Long> {
 
     fun findByCustomerId(id: Long): Flow<Address>
+
+    fun findAllByCustomerId(ids: Iterable<Long>) : Flow<Address>
 }
