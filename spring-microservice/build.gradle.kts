@@ -40,6 +40,10 @@ subprojects {
     }
 
     dependencies {
+
+        implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.11")
+        implementation("com.michael-bull.kotlin-result:kotlin-result-coroutines:1.1.11")
+
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
