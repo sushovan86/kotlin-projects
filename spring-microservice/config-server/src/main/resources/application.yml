@@ -12,3 +12,10 @@ spring:
         uri: https://github.com/sushovan86/config-repo.git
         search-paths:
           - spring-microservice
+
+encrypt:
+  key-store:
+    location: classpath:/server.jks
+    alias: mysecretkey
+    secret: secretKey
+    password: secretKey
