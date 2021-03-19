@@ -1,10 +1,15 @@
 package com.chak.sc.routes
 
 import com.chak.sc.entity.Customer
-import com.chak.sc.messages.*
+import com.chak.sc.messages.CustomerIdShouldBeInteger
+import com.chak.sc.messages.CustomerIdShouldBePositive
+import com.chak.sc.messages.CustomerNotFound
+import com.chak.sc.messages.ServerError
 import com.chak.sc.model.CustomerDTO
 import com.chak.sc.service.CustomerMapper
 import com.chak.sc.service.CustomerService
+import com.chak.sc.utils.DomainErrors
+import com.chak.sc.utils.returnSingleResponse
 import com.github.michaelbull.result.*
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
@@ -16,23 +21,23 @@ class CustomerHandler(
 
     suspend fun findCustomerById(serverRequest: ServerRequest): ServerResponse =
         validateCustomerId(serverRequest.pathVariable("id"))
-            .andThen { findById(it) }
-            .andThen { convertToDTO(it) }
+            .andThen { id -> findById(id) }
+            .andThen { customer -> convertToDTO(customer) }
             .returnSingleResponse()
 
     private suspend fun findById(id: Int): Result<Customer, DomainErrors> =
         runCatching { customerService.getCustomerById(id) }
-            .mapError { ServerError(it) }
-            .andThen {
-                when (it) {
+            .mapError { throwable -> ServerError(throwable) }
+            .andThen { customer ->
+                when (customer) {
                     null -> Err(CustomerNotFound(id))
-                    else -> Ok(it)
+                    else -> Ok(customer)
                 }
             }
 
     private fun convertToDTO(customer: Customer): Result<CustomerDTO, DomainErrors> =
         runCatching { customerMapper.toCustomerDTO(customer) }
-            .mapError { ServerError(it) }
+            .mapError { throwable -> ServerError(throwable) }
 
 
     private fun validateCustomerId(idPathValue: String): Result<Int, DomainErrors> {

@@ -5,6 +5,7 @@ plugins {
 dependencies {
 
     implementation(project(":core"))
+    implementation(project(":webflux-util"))
 
     implementation("org.mapstruct:mapstruct:1.4.2.Final")
     kapt("org.mapstruct:mapstruct-processor:1.4.2.Final")
