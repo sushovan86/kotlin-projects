@@ -1,8 +1,12 @@
 package com.chak.sc.service
 
 import com.chak.sc.entity.Customer
+import com.chak.sc.messages.CustomerNotFound
 import com.chak.sc.repo.AddressRepository
 import com.chak.sc.repo.CustomerRepository
+import com.chak.sc.utils.DomainErrors
+import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.toResultOr
 import org.springframework.stereotype.Service
 
 @Service
@@ -11,31 +15,30 @@ class CustomerService(
     private val addressRepository: AddressRepository
 ) {
 
-    suspend fun getCustomerDetails(customerNumber: String): Customer? {
+    suspend fun getCustomerDetails(customerNumber: String): Result<Customer, DomainErrors> =
+        customerRepository.findByCustomerNumber(customerNumber)
+            ?.also {
+                populateAddressDetails(it)
+            }.toResultOr {
+                CustomerNotFound(customerNumber)
+            }
 
-        val customer: Customer? = customerRepository.findByCustomerNumber(customerNumber);
 
-        return customer?.also {
-            populateAddressDetails(customer)
-        }
-    }
+    suspend fun getCustomerById(id: Int): Result<Customer, DomainErrors> =
+        customerRepository.findById(id)
+            ?.also {
+                populateAddressDetails(it)
+            }.toResultOr {
+                CustomerNotFound(id.toString())
+            }
 
-    suspend fun getCustomerById(id: Int): Customer? {
-
-        val customer: Customer? = customerRepository.findById(id)
-
-        return customer?.also {
-            populateAddressDetails(customer)
-        }
-    }
 
     private suspend fun populateAddressDetails(customer: Customer): Unit {
-
-        customer.id?.let {
-            addressRepository.findAllByCustomerId(it)
-        }.also {
-            customer.addressList = it
-        }
+        customer.id
+            ?.let {
+                addressRepository.findAllByCustomerId(it)
+            }?.also {
+                customer.addressList = it
+            }
     }
-
 }

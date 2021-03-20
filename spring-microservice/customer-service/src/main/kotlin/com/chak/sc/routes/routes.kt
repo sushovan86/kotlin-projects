@@ -2,10 +2,11 @@ package com.chak.sc.routes
 
 import org.springframework.web.reactive.function.server.coRouter
 
-fun applicationRouter(customerHandler: CustomerHandler) = coRouter {
+fun applicationRouter(customerHandler: CustomerHandler) =
+    coRouter {
 
-    "/customers".nest {
+        "/customers".nest {
 
-        GET("findById/{id}", customerHandler::findCustomerById)
+            GET("findById/{id}", customerHandler::findCustomerById)
+        }
     }
-}
