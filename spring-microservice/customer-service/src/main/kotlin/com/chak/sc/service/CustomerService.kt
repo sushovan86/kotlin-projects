@@ -23,7 +23,6 @@ class CustomerService(
                 CustomerNotFound(customerNumber)
             }
 
-
     suspend fun getCustomerById(id: Int): Result<Customer, DomainErrors> =
         customerRepository.findById(id)
             ?.also {
@@ -32,8 +31,7 @@ class CustomerService(
                 CustomerNotFound(id.toString())
             }
 
-
-    private suspend fun populateAddressDetails(customer: Customer): Unit {
+    private suspend fun populateAddressDetails(customer: Customer) {
         customer.id
             ?.let {
                 addressRepository.findAllByCustomerId(it)
