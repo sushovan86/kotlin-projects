@@ -1,10 +1,7 @@
 package com.chak.sc.routes
 
-import com.chak.sc.entity.Customer
 import com.chak.sc.messages.CustomerIdShouldBeInteger
 import com.chak.sc.messages.CustomerIdShouldBePositive
-import com.chak.sc.messages.ServerError
-import com.chak.sc.model.CustomerDTO
 import com.chak.sc.service.CustomerMapper
 import com.chak.sc.service.CustomerService
 import com.chak.sc.utils.DomainErrors
@@ -20,19 +17,9 @@ class CustomerHandler(
 
     suspend fun findCustomerById(serverRequest: ServerRequest): ServerResponse =
         validateCustomerId(serverRequest.pathVariable("id"))
-            .andThen { id -> findById(id) }
-            .map { customer -> convertToDTO(customer) }
-            .returnSingleResponse()
-
-    private suspend fun findById(id: Int): Result<Customer, DomainErrors> =
-        runCatching { customerService.getCustomerById(id) }
-            .mapError { throwable -> ServerError(throwable) }
-            .flatMap { it }
-
-    private fun convertToDTO(customer: Customer): Result<CustomerDTO, DomainErrors> =
-        runCatching { customerMapper.toCustomerDTO(customer) }
-            .mapError { throwable -> ServerError(throwable) }
-
+            .andThen { id -> customerService.getCustomerById(id) }
+            .map { customer -> customerMapper.toCustomerDTO(customer) }
+            .returnSingleResponse(serverRequest)
 
     private fun validateCustomerId(idPathValue: String): Result<Int, DomainErrors> {
 

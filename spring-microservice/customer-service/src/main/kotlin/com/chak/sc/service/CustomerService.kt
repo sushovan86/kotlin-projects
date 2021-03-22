@@ -26,6 +26,7 @@ class CustomerService(
     suspend fun getCustomerById(id: Int): Result<Customer, DomainErrors> =
         customerRepository.findById(id)
             ?.also {
+//                val x = 1/0
                 populateAddressDetails(it)
             }.toResultOr {
                 CustomerNotFound(id.toString())
