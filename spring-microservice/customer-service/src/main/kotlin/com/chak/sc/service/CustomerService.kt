@@ -3,6 +3,7 @@ package com.chak.sc.service
 import com.chak.sc.entity.Customer
 import com.chak.sc.messages.CustomerNotFound
 import com.chak.sc.repo.AddressRepository
+import com.chak.sc.repo.CustomerCrudRepository
 import com.chak.sc.repo.CustomerRepository
 import com.chak.sc.utils.DomainErrors
 import com.github.michaelbull.result.Result
@@ -11,12 +12,16 @@ import org.springframework.stereotype.Service
 
 @Service
 class CustomerService(
+    private val customerCrudRepository: CustomerCrudRepository,
     private val customerRepository: CustomerRepository,
     private val addressRepository: AddressRepository
 ) {
 
+    fun getCustomersByAge(age: Int, comparator: String?) =
+        customerRepository.findCustomersByAge(age, comparator)
+
     suspend fun getCustomerDetails(customerNumber: String): Result<Customer, DomainErrors> =
-        customerRepository.findByCustomerNumber(customerNumber)
+        customerCrudRepository.findByCustomerNumber(customerNumber)
             ?.also {
                 populateAddressDetails(it)
             }.toResultOr {
@@ -24,7 +29,7 @@ class CustomerService(
             }
 
     suspend fun getCustomerById(id: Int): Result<Customer, DomainErrors> =
-        customerRepository.findById(id)
+        customerCrudRepository.findById(id)
             ?.also {
 //                val x = 1/0
                 populateAddressDetails(it)

@@ -21,3 +21,9 @@ class CustomerNotFound(private val id: String) :
         status = HttpStatus.NOT_FOUND,
         message = "No customer found against '$id'"
     )
+
+class AgeIsInvalid(private val age: String?) :
+        DomainErrors by ErrorResponse(
+            status = HttpStatus.BAD_REQUEST,
+            message = "Age $age provided is invalid"
+        )

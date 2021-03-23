@@ -15,5 +15,4 @@ data class ErrorDTO(
         "requestId" to requestId,
         "message" to message
     )
-
 }

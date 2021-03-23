@@ -1,3 +1,4 @@
-management:
-  endpoints:
-    web:
+spring:
+  jackson:
+    default-property-inclusion: NON_NULL
+

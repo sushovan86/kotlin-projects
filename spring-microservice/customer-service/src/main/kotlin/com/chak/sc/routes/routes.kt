@@ -8,5 +8,9 @@ fun applicationRouter(customerHandler: CustomerHandler) =
         "/customers".nest {
 
             GET("findById/{id}", customerHandler::findCustomerById)
+            GET("age/{age}", customerHandler::findCustomersByAge)
         }
+
     }
+
+

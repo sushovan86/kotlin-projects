@@ -8,8 +8,7 @@ import org.springframework.web.reactive.function.server.ServerRequest
 import java.io.PrintWriter
 import java.io.StringWriter
 
-
-fun errorBeanDefinitions() = beans {
+val errorBeanDefinitions = beans {
 
     bean<DefaultErrorAttributes> {
 

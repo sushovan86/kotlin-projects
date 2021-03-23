@@ -3,10 +3,11 @@ package com.chak.sc.utils
 import com.chak.sc.model.ErrorDTO
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.mapBoth
+import kotlinx.coroutines.flow.Flow
 import org.springframework.http.HttpStatus
-import org.springframework.web.reactive.function.server.ServerRequest
-import org.springframework.web.reactive.function.server.ServerResponse
-import org.springframework.web.reactive.function.server.bodyValueAndAwait
+import org.springframework.http.MediaType
+import org.springframework.web.reactive.function.server.*
+import org.springframework.web.reactive.function.server.ServerResponse.ok
 import java.util.*
 
 interface DomainErrors {
@@ -44,9 +45,21 @@ suspend inline fun <T> Result<T, DomainErrors>.returnSingleResponse(serverReques
         { success ->
             when (success) {
                 null -> ErrorResponse(HttpStatus.NO_CONTENT, "No Data").response(serverRequest)
-                else -> ServerResponse.ok().bodyValueAndAwait(success)
+                else -> ok().bodyValueAndAwait(success)
             }
         },
         { error -> error.response(serverRequest) }
     )
 
+suspend inline fun <reified T : Any> Result<Flow<T>, DomainErrors>.returnFlowResponse(serverRequest: ServerRequest)
+        : ServerResponse =
+    this.mapBoth(
+        { success ->
+            when (MediaType.TEXT_EVENT_STREAM) {
+                in serverRequest.headers().accept(),
+                serverRequest.headers().contentType().orElse(null) -> ok().sse().bodyAndAwait(success)
+                else -> ok().json().bodyAndAwait(success)
+            }
+        },
+        { error -> error.response(serverRequest) }
+    )
