@@ -3,7 +3,7 @@ package com.chak.sc.model
 import java.util.*
 
 data class ErrorDTO(
-    val timestamp: Date,
+    val timestamp: Date = Date(),
     val path: String,
     val requestId: String,
     val message: String = ""

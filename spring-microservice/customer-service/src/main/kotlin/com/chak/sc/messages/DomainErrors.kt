@@ -18,7 +18,7 @@ class CustomerIdShouldBePositive(private val id: Int) :
 
 class CustomerNotFound(private val id: String) :
     DomainErrors by ErrorResponse(
-        status = HttpStatus.NOT_FOUND,
+        status = HttpStatus.OK,
         message = "No customer found against '$id'"
     )
 

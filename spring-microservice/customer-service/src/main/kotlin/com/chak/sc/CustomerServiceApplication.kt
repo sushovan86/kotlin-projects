@@ -26,12 +26,5 @@ val applicationBeanDefinitions = beans {
     bean {
         applicationRouter(ref())
     }
-    bean<WebFluxConfigurer> {
-        object : WebFluxConfigurer {
-            override fun configureHttpMessageCodecs(configurer: ServerCodecConfigurer) {
-                configurer.defaultCodecs().enableLoggingRequestDetails(true)
-            }
-        }
-    }
 }
 

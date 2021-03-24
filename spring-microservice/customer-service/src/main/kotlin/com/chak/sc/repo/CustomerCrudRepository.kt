@@ -24,7 +24,6 @@ interface CustomerCrudRepository : CoroutineCrudRepository<Customer, Int> {
 
 @Repository
 class CustomerRepository(
-    private val r2dbcEntityTemplate: R2dbcEntityTemplate,
     private val databaseClient: DatabaseClient
 ) {
 

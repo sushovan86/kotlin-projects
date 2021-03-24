@@ -30,24 +30,21 @@ class CustomerHandler(
             }
             .returnFlowResponse(serverRequest)
 
-
-    private fun extractAgeAndOperator(serverRequest: ServerRequest): Result<Pair<Int, String?>, DomainErrors> {
-
-        val age = serverRequest.pathVariable("age").toIntOrNull()
-        if (age == null) {
-            return Err(AgeIsInvalid(age))
-        }
-        val comparator: String? = serverRequest.queryParam("operator")
-            .orElse(null)
-
-        return Ok(age to comparator)
-    }
-
     suspend fun findCustomerById(serverRequest: ServerRequest): ServerResponse =
         validateCustomerId(serverRequest.pathVariable("id"))
             .andThen { id -> customerService.getCustomerById(id) }
             .map { customer -> customerMapper.toCustomerDTO(customer) }
             .returnSingleResponse(serverRequest)
+
+    private fun extractAgeAndOperator(serverRequest: ServerRequest): Result<Pair<Int, String?>, DomainErrors> {
+
+        val inputAge = serverRequest.pathVariable("age")
+        val age = inputAge.toIntOrNull() ?: return Err(AgeIsInvalid(inputAge))
+        val comparator: String? = serverRequest.queryParam("operator")
+            .orElse(null)
+
+        return Ok(age to comparator)
+    }
 
     private fun validateCustomerId(idPathValue: String): Result<Int, DomainErrors> {
 
