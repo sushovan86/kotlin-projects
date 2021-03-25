@@ -18,6 +18,8 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+    implementation("org.springframework.cloud:spring-cloud-sleuth-zipkin")
+    implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
 
     runtimeOnly("io.r2dbc:r2dbc-postgresql")
     runtimeOnly("org.postgresql:postgresql")

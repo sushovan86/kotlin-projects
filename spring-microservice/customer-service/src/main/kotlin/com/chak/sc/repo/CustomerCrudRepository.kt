@@ -31,7 +31,7 @@ class CustomerRepository(
 
         val criteria: String = when (comparator) {
             "older" -> "extract(year from age(c.dob)) > :age"
-            "younger" -> "extract(year from age(c.dob)) > :age"
+            "younger" -> "extract(year from age(c.dob)) < :age"
             else -> "extract(year from age(c.dob)) = :age"
         }
 
