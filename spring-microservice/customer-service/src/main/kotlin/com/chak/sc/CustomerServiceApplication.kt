@@ -7,8 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.context.support.beans
-import org.springframework.http.codec.ServerCodecConfigurer
-import org.springframework.web.reactive.config.WebFluxConfigurer
 
 @SpringBootApplication
 @EnableEurekaClient

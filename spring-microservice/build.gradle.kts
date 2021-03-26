@@ -10,6 +10,12 @@ plugins {
     kotlin("kapt") version "1.4.31" apply false
 }
 
+idea {
+    module {
+        isDownloadSources = true
+    }
+}
+
 val springBootVersion: String by project
 val springCloudVersion: String by project
 
@@ -67,11 +73,3 @@ subprojects {
         useJUnitPlatform()
     }
 }
-
-
-
-
-
-
-
-
