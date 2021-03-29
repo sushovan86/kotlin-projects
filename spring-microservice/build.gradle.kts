@@ -1,5 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val springBootVersion: String by project
+val springCloudVersion: String by project
+
 plugins {
     idea
     id("org.springframework.boot") version "2.4.3" apply false
@@ -15,9 +18,6 @@ idea {
         isDownloadSources = true
     }
 }
-
-val springBootVersion: String by project
-val springCloudVersion: String by project
 
 allprojects {
 

@@ -2,12 +2,6 @@ package com.chak.sc.repo
 
 import com.chak.sc.entity.Customer
 import kotlinx.coroutines.flow.Flow
-import org.springframework.cglib.core.Local
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
-import org.springframework.data.r2dbc.core.flow
-import org.springframework.data.relational.core.query.Criteria
-import org.springframework.data.relational.core.query.Query
-import org.springframework.data.relational.core.query.isEqual
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.r2dbc.core.flow
