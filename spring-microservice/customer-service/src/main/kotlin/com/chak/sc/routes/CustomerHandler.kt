@@ -36,6 +36,17 @@ class CustomerHandler(
             .map { customer -> customerMapper.toCustomerDTO(customer) }
             .returnSingleResponse(serverRequest)
 
+    suspend fun findCustomerByNumber(serverRequest: ServerRequest): ServerResponse =
+        Ok(serverRequest.pathVariable("number"))
+            .andThen { number -> customerService.getCustomerDetails(number) }
+            .map { customer -> customerMapper.toCustomerDTO(customer) }
+            .returnSingleResponse(serverRequest)
+
+    suspend fun findOrdersForCustomer(serverRequest: ServerRequest): ServerResponse =
+        validateCustomerId(serverRequest.pathVariable("id"))
+            .andThen { id -> customerService.getOrdersForCustomer(id) }
+            .returnFlowResponse(serverRequest)
+
     private fun extractAgeAndOperator(serverRequest: ServerRequest): Result<Pair<Int, String?>, DomainErrors> {
 
         val inputAge = serverRequest.pathVariable("age")

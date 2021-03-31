@@ -15,5 +15,9 @@ fun productRoutes(productHandler: ProductHandler) = coRouter {
         GET("findByIdWithStatus/{id}", productHandler::findProductWithStatusById)
     }
 
+    "/inventories".nest {
+        GET("findById/{id}", productHandler::findByInventoryId)
+    }
+
     loggingFilter(logger)
 }

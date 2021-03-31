@@ -3,6 +3,7 @@ package com.chak.sc
 import com.chak.sc.routes.CustomerHandler
 import com.chak.sc.routes.applicationRouter
 import com.chak.sc.utils.errorBeanDefinitions
+import com.chak.sc.utils.webclientBean
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient
@@ -16,6 +17,7 @@ fun main(args: Array<String>) {
     runApplication<CustomerServiceApplication>(*args) {
         addInitializers(errorBeanDefinitions)
         addInitializers(applicationBeanDefinitions)
+        addInitializers(webclientBean)
     }
 }
 

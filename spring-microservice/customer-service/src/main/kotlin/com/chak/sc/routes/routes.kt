@@ -13,7 +13,9 @@ fun applicationRouter(customerHandler: CustomerHandler) =
         "/customers".nest {
 
             GET("findById/{id}", customerHandler::findCustomerById)
+            GET("findByNo/{number}", customerHandler::findCustomerById)
             GET("age/{age}", customerHandler::findCustomersByAge)
+            GET("order/{id}", customerHandler::findOrdersForCustomer)
         }
 
         loggingFilter(logger)

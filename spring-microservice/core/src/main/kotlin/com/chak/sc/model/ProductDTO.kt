@@ -15,7 +15,7 @@ data class InventoryDTO(
     val inventoryCode: String,
     val dateWhenAdded: LocalDate,
     val status: String,
-    val productId: Int
+    val product: ProductDTO? = null
 )
 
 data class ProductWithStatusDTO(

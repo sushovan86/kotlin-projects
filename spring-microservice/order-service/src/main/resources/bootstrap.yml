@@ -6,4 +6,3 @@ spring:
       fail-fast: true
       uri:
         - http://localhost:8888
-

@@ -13,28 +13,29 @@ val logger = getLogger<ServiceGatewayApplication>()
 class GatewayConfig(@Value("\${gateway.retry-count:5}") val retryCount: Int)
 
 fun gatewayRoutes(
+    routeToServiceMap: Map<String, String>,
     routeLocatorBuilder: RouteLocatorBuilder,
     gatewayConfig: GatewayConfig
 ) =
     routeLocatorBuilder.routes {
 
-        route {
-            path("/customers/**")
-            commonFilter(gatewayConfig)
-            uri("lb://customer-service")
-        }
+        routeToServiceMap.forEach { (urlPath, uri) ->
 
-        route {
-            path("/products/**")
-            commonFilter(gatewayConfig)
-            uri("lb://product-service")
+            route {
+
+                path(urlPath)
+                commonFilter(gatewayConfig)
+                uri("lb://$uri")
+            }
         }
     }
 
 private fun PredicateSpec.commonFilter(gatewayConfig: GatewayConfig) =
     filters {
 
-        retry(gatewayConfig.retryCount)
+        retry {
+            it.retries = gatewayConfig.retryCount
+        }
 
         filter { exchange, chain ->
             logger.debug(

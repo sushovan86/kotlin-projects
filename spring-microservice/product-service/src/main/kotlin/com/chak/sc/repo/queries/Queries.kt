@@ -14,3 +14,15 @@ GROUP BY p.id,
          p.company,
          p.price
 """
+
+const val INVENTORY_DETAILS = """
+SELECT pr_inv.*,
+       prod.id                 AS prod_id,
+       prod.company            AS prod_company,
+       prod.productdescription AS prod_productdescription,
+       prod.price              AS prod_price
+FROM   productinventory pr_inv
+       LEFT JOIN product prod
+              ON prod.id = pr_inv.productid
+WHERE  pr_inv.id = :inventoryId    
+"""
