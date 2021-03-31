@@ -52,7 +52,7 @@ class CustomerService(
 
         logger.debug("Customer Id: $id")
 
-        val orderList = webClient.get()
+        val orderFlow: Flow<OrderDTO> = webClient.get()
             .uri("/orders/findByCustomerId/{id}", id)
             .accept(MediaType.TEXT_EVENT_STREAM)
             .retrieve()
@@ -65,7 +65,7 @@ class CustomerService(
                     .awaitBody()
             }
 
-        return Ok(orderList)
+        return Ok(orderFlow)
     }
 
     private suspend fun populateAddressDetails(customer: Customer) {
