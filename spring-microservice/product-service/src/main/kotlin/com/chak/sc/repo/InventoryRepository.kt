@@ -21,14 +21,15 @@ class InventoryRepository(
     private val r2dbcConverter: R2dbcConverter
 ) {
 
-    suspend fun findByInventoryId(inventoryId: Int): Inventory? = databaseClient.sql(INVENTORY_DETAILS)
-        .bind("inventoryId", inventoryId)
-        .map { row, rowMetadata ->
-            r2dbcConverter.read(Inventory::class.java, row, rowMetadata)
-                .also {
-                    it.product = r2dbcConverter.read<Product>(row, "prod_")
-                }
-        }
-        .awaitSingleOrNull()
-
+    suspend fun findByInventoryId(inventoryId: Int): Inventory? =
+        databaseClient
+            .sql(INVENTORY_DETAILS)
+            .bind("inventoryId", inventoryId)
+            .map { row, rowMetadata ->
+                r2dbcConverter.read(Inventory::class.java, row, rowMetadata)
+                    .apply {
+                        product = r2dbcConverter.read<Product>(row, "prod_")
+                    }
+            }
+            .awaitSingleOrNull()
 }

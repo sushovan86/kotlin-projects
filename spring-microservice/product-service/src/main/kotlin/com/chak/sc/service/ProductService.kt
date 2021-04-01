@@ -9,9 +9,8 @@ import com.chak.sc.repo.InventoryCrudRepository
 import com.chak.sc.repo.InventoryRepository
 import com.chak.sc.repo.ProductRepository
 import com.chak.sc.utils.DomainErrors
-import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.toResultOr
 import org.springframework.stereotype.Service
 
 @Service
@@ -23,24 +22,21 @@ class ProductService(
 
     suspend fun findProductById(id: Int, includeInventories: Boolean = false): Result<Product, DomainErrors> {
 
-        val product: Product = productRepository.findById(id) ?: return Err(ProductNotFoundForID(id))
-        product.inventoryList = when {
-            includeInventories && product.id != null -> inventoryCrudRepository.findByProductId(product.id!!)
-            else -> null
-        }
-        return Ok(product)
+        val product = productRepository.findById(id)
+
+        product?.takeIf { prod -> includeInventories && prod.id != null }
+            ?.apply {
+                inventoryList = inventoryCrudRepository.findByProductId(id)
+            }
+
+        return product.toResultOr { ProductNotFoundForID(id) }
     }
 
     suspend fun findProductWithStatusById(id: Int): Result<ProductWithStatusDTO, DomainErrors> =
         productRepository.getProductAvailabilityStatusById(id)
-            ?.let {
-                Ok(it)
-            } ?: Err(ProductNotFoundForID(id))
+            .toResultOr { ProductNotFoundForID(id) }
 
     suspend fun findByInventoryId(id: Int): Result<Inventory, DomainErrors> =
         inventoryRepository.findByInventoryId(id)
-            ?.let {
-                Ok(it)
-            } ?: Err(InventoryNotFound(id))
-
+            .toResultOr { InventoryNotFound(id) }
 }
