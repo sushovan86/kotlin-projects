@@ -69,11 +69,8 @@ class CustomerService(
     }
 
     private suspend fun populateAddressDetails(customer: Customer) {
-        customer.id
-            ?.let {
-                addressRepository.findAllByCustomerId(it)
-            }?.also {
-                customer.addressList = it
-            }
+        customer.addressList = customer.id?.let {
+            addressRepository.findAllByCustomerId(it)
+        }
     }
 }
