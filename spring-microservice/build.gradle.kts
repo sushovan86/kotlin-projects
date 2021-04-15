@@ -6,6 +6,7 @@ val springCloudVersion: String by project
 plugins {
     idea
     id("org.springframework.boot") version "2.4.3" apply false
+    id("com.gorylenko.gradle-git-properties") version "2.2.4" apply false
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
 
     kotlin("jvm") version "1.4.31"
@@ -36,6 +37,8 @@ subprojects {
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "com.gorylenko.gradle-git-properties")
 
     java.sourceCompatibility = JavaVersion.VERSION_11
 

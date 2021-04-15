@@ -27,4 +27,3 @@ val applicationBeanDefinitions = beans {
         applicationRouter(ref())
     }
 }
-
