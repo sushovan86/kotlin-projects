@@ -27,7 +27,11 @@ suspend inline fun <reified T : Any> Result<Flow<T>, DomainErrors>.returnFlowRes
     )
 
 @PublishedApi
-internal suspend inline fun <reified T : Any> flowResponse(flow: Flow<T>, serverRequest: ServerRequest): ServerResponse =
+internal suspend inline fun <reified T : Any> flowResponse(
+    flow: Flow<T>,
+    serverRequest: ServerRequest
+): ServerResponse =
+
     when (MediaType.TEXT_EVENT_STREAM) {
 
         in serverRequest.headers().accept(),

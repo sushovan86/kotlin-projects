@@ -7,17 +7,18 @@ import org.springframework.web.reactive.function.server.contentTypeOrNull
 
 inline fun <reified T> getLogger(): Logger = LoggerFactory.getLogger(T::class.java)
 
-fun CoRouterFunctionDsl.loggingFilter(logger: Logger) {
+fun CoRouterFunctionDsl.loggingFilter(logger: Logger) =
     filter { serverRequest, responseHandler ->
 
-        logger.debug("""---
+        logger.debug(
+            """---
             Request Id: ${serverRequest.exchange().request.id}
             Query Params: ${serverRequest.queryParams()}
             Request Path: ${serverRequest.requestPath()}
             Accept-Type: ${serverRequest.headers().accept()}
             Content-Type: ${serverRequest.headers().contentTypeOrNull()}
-        """.trimIndent())
+        """.trimIndent()
+        )
 
         responseHandler(serverRequest)
     }
-}
