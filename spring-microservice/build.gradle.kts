@@ -5,13 +5,13 @@ val springCloudVersion: String by project
 
 plugins {
     idea
-    id("org.springframework.boot") version "2.4.3" apply false
+    id("org.springframework.boot") version "2.5.3" apply false
     id("com.gorylenko.gradle-git-properties") version "2.2.4" apply false
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
 
-    kotlin("jvm") version "1.4.31"
-    kotlin("plugin.spring") version "1.4.31" apply false
-    kotlin("kapt") version "1.4.31" apply false
+    kotlin("jvm") version "1.5.21"
+    kotlin("plugin.spring") version "1.5.21" apply false
+    kotlin("kapt") version "1.5.21" apply false
 }
 
 idea {
